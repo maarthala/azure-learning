@@ -1,0 +1,12 @@
+{
+	"name": "LS_HTTP",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://jsonplaceholder.typicode.com/posts",
+			"enableServerCertificateValidation": false,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

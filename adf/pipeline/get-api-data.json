@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "get-api-data",
 	"properties": {
 		"activities": [
 			{

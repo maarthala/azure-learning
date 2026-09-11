@@ -1,0 +1,6 @@
+{
+	"name": "dataflow-pipeline-from-sql-to-storage",
+	"properties": {
+		"annotations": []
+	}
+}

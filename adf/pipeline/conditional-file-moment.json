@@ -185,7 +185,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "testSource",
-								"value": "@concat(',',substring(item().name,0,indexof(item().name,'_')),',')"
+								"value": "@concat(concat(',',variables('validSources'),','),'-',concat(',',substring(item().name,0,indexof(item().name,'_')),','))"
 							}
 						}
 					]

@@ -155,7 +155,10 @@
 												"referenceName": "DS_datalake_Binary",
 												"type": "DatasetReference",
 												"parameters": {
-													"Folder": "@concat('landing/', substring(item().name, 0, indexof(item().name, '_')))",
+													"Folder": {
+														"value": "landing/",
+														"type": "Expression"
+													},
 													"Filename": "@item().name"
 												}
 											}

@@ -184,8 +184,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "validSources",
-								"value": ""
+								"variableName": "v1",
+								"value": "@concat(',',substring(item().name,0,indexof(item().name,'_')),',')"
 							}
 						},
 						{
@@ -198,8 +198,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "validSources",
-								"value": ""
+								"variableName": "v2",
+								"value": "@concat(',',variables('validSources'),',')"
 							}
 						},
 						{

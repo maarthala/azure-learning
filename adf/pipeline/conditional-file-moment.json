@@ -184,8 +184,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "allowedNames",
-								"value": "concat(',',variables('validSources'),',')"
+								"variableName": "testSource",
+								"value": "@concat(',',substring(item().name,0,indexof(item().name,'_')),',')"
 							}
 						}
 					]

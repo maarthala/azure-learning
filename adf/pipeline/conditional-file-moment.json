@@ -52,13 +52,20 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "If Condition1",
+							"name": "If-condition",
 							"type": "IfCondition",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "v2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@and(equals(item().type,'File'),contains(concat(',',variables('validSources'),','),concat(',',substring(item().name,0,indexof(item().name,'_')),',')))",
+									"value": "@and(equals(item().type,'File'),contains(variables('v1'),variables('v2')))",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
@@ -181,7 +188,7 @@
 							}
 						},
 						{
-							"name": "Set variable1",
+							"name": "v1",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"policy": {
@@ -195,9 +202,16 @@
 							}
 						},
 						{
-							"name": "Set variable2",
+							"name": "v2",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "v1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"secureOutput": false,
 								"secureInput": false
@@ -206,34 +220,6 @@
 							"typeProperties": {
 								"variableName": "v2",
 								"value": "@concat(',',variables('validSources'),',')"
-							}
-						},
-						{
-							"name": "Set variable3",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "v3",
-								"value": "@contains(\n\t\tconcat(',',variables('validSources'),','),\n\t\tconcat(',',substring(item().name,0,indexof(item().name,'_')),','))"
-							}
-						},
-						{
-							"name": "Set variable4",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "v4",
-								"value": "@equals(\n\titem().type,'File')"
 							}
 						}
 					]

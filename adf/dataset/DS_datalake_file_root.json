@@ -1,0 +1,26 @@
+{
+	"name": "DS_datalake_file_root",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_DataStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().Filename",
+					"type": "Expression"
+				},
+				"fileSystem": "landing"
+			}
+		}
+	}
+}

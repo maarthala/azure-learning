@@ -166,7 +166,7 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "DS_datalake_Binary",
+												"referenceName": "DS_datalake_file_root",
 												"type": "DatasetReference",
 												"parameters": {
 													"Filename": {
@@ -211,7 +211,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataset": {
-												"referenceName": "DS_datalake_Binary",
+												"referenceName": "DS_datalake_file_root",
 												"type": "DatasetReference",
 												"parameters": {
 													"Filename": {
@@ -262,7 +262,7 @@
 										},
 										"inputs": [
 											{
-												"referenceName": "DS_datalake_Binary",
+												"referenceName": "DS_datalake_file_root",
 												"type": "DatasetReference",
 												"parameters": {
 													"Filename": {
@@ -310,7 +310,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"dataset": {
-												"referenceName": "DS_datalake_Binary",
+												"referenceName": "DS_datalake_file_root",
 												"type": "DatasetReference",
 												"parameters": {
 													"Filename": {

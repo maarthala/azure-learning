@@ -48,9 +48,41 @@
 						"value": "@activity('Get Metadata1').output.childItems",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
-							"name": "If Condition1",
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "testSource",
+								"value": "@substring(item().name,0,indexof(item().name,'_'))."
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ForEach1_copy1",
+				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "If Condition1_copy1",
 							"type": "IfCondition",
 							"dependsOn": [],
 							"userProperties": [],
@@ -61,7 +93,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Copy data2",
+										"name": "Copy data2_copy1",
 										"type": "Copy",
 										"dependsOn": [],
 										"policy": {
@@ -115,7 +147,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Copy data1",
+										"name": "Copy data1_copy1",
 										"type": "Copy",
 										"dependsOn": [],
 										"policy": {
@@ -180,6 +212,9 @@
 			"validSources": {
 				"type": "String",
 				"defaultValue": " account,hr"
+			},
+			"testSource": {
+				"type": "String"
 			}
 		},
 		"annotations": []

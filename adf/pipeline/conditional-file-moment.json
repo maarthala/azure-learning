@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -172,6 +173,20 @@
 									}
 								]
 							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "allowedNames",
+								"value": "concat(',',variables('validSources'),',')"
+							}
 						}
 					]
 				}
@@ -183,6 +198,9 @@
 				"defaultValue": " account,hr"
 			},
 			"testSource": {
+				"type": "String"
+			},
+			"allowedNames": {
 				"type": "String"
 			}
 		},

@@ -61,7 +61,97 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "testSource",
-								"value": "@substring(item().name,0,indexof(item().name,'_'))."
+								"value": {
+									"value": "@substring(item().name,0,indexof(item().name,'_'))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@and(equals(item().type,'File'),contains(concat(',',variables('validSources'),','),concat(',',substring(item().name,0,indexof(item().name,'_')),',')))",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Copy data2",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"enableStaging": false
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Copy data1",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "BinarySource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true
+												},
+												"formatSettings": {
+													"type": "BinaryReadSettings"
+												}
+											},
+											"sink": {
+												"type": "BinarySink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												}
+											},
+											"enableStaging": false
+										},
+										"inputs": [
+											{
+												"referenceName": "DS_datalake_Binary",
+												"type": "DatasetReference",
+												"parameters": {
+													"Folder": "landing/trash/",
+													"Filename": "@item().name"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DS_datalake_Binary",
+												"type": "DatasetReference",
+												"parameters": {
+													"Folder": {
+														"value": "@concat('landing/', substring(item().name, 0, indexof(item().name, '_')))",
+														"type": "Expression"
+													},
+													"Filename": "@item().name"
+												}
+											}
+										]
+									}
+								]
 							}
 						}
 					]

@@ -99,7 +99,7 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"Folder": {
-														"value": "landing/trash",
+														"value": "landing/",
 														"type": "Expression"
 													},
 													"Filename": "@item().name"

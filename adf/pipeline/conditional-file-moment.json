@@ -169,10 +169,7 @@
 												"referenceName": "DS_datalake_Binary",
 												"type": "DatasetReference",
 												"parameters": {
-													"Folder": {
-														"value": "",
-														"type": "Expression"
-													},
+													"Folder": "",
 													"Filename": {
 														"value": "@item().name",
 														"type": "Expression"
@@ -185,10 +182,7 @@
 												"referenceName": "DS_datalake_Binary",
 												"type": "DatasetReference",
 												"parameters": {
-													"Folder": {
-														"value": "trash",
-														"type": "Expression"
-													},
+													"Folder": "trash",
 													"Filename": {
 														"value": "@item().name",
 														"type": "Expression"
@@ -221,10 +215,7 @@
 												"referenceName": "DS_datalake_Binary",
 												"type": "DatasetReference",
 												"parameters": {
-													"Folder": {
-														"value": "",
-														"type": "Expression"
-													},
+													"Folder": "",
 													"Filename": {
 														"value": "@item().name",
 														"type": "Expression"
@@ -276,10 +267,7 @@
 												"referenceName": "DS_datalake_Binary",
 												"type": "DatasetReference",
 												"parameters": {
-													"Folder": {
-														"value": "",
-														"type": "Expression"
-													},
+													"Folder": "",
 													"Filename": {
 														"value": "@item().name",
 														"type": "Expression"
@@ -328,10 +316,7 @@
 												"referenceName": "DS_datalake_Binary",
 												"type": "DatasetReference",
 												"parameters": {
-													"Folder": {
-														"value": "",
-														"type": "Expression"
-													},
+													"Folder": "",
 													"Filename": {
 														"value": "@item().name",
 														"type": "Expression"

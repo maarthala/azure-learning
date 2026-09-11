@@ -1,0 +1,18 @@
+{
+	"name": "get_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_HTTP",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "/posts"
+			}
+		},
+		"schema": {}
+	}
+}

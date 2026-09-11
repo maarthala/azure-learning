@@ -233,6 +233,9 @@
 			},
 			"v3": {
 				"type": "Boolean"
+			},
+			"v4": {
+				"type": "String"
 			}
 		},
 		"annotations": []

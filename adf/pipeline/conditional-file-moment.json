@@ -184,8 +184,36 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "testSource",
-								"value": "@concat(concat(',',variables('validSources'),','),'-',concat(',',substring(item().name,0,indexof(item().name,'_')),','))"
+								"variableName": "validSources",
+								"value": ""
+							}
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "validSources",
+								"value": ""
+							}
+						},
+						{
+							"name": "Set variable3",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "validSources",
+								"value": ""
 							}
 						}
 					]
@@ -197,10 +225,10 @@
 				"type": "String",
 				"defaultValue": " account,hr"
 			},
-			"testSource": {
+			"v1": {
 				"type": "String"
 			},
-			"allowedNames": {
+			"v2": {
 				"type": "String"
 			}
 		},

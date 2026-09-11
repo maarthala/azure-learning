@@ -223,7 +223,7 @@
 		"variables": {
 			"validSources": {
 				"type": "String",
-				"defaultValue": " account,hr"
+				"defaultValue": "account,hr"
 			},
 			"v1": {
 				"type": "String"

@@ -63,7 +63,64 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Copy data2",
+										"name": "if-not-true",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "BinarySource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true
+												},
+												"formatSettings": {
+													"type": "BinaryReadSettings"
+												}
+											},
+											"sink": {
+												"type": "BinarySink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												}
+											},
+											"enableStaging": false
+										},
+										"inputs": [
+											{
+												"referenceName": "DS_datalake_Binary",
+												"type": "DatasetReference",
+												"parameters": {
+													"Folder": {
+														"value": "landing/trash",
+														"type": "Expression"
+													},
+													"Filename": "@item().name"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DS_datalake_Binary",
+												"type": "DatasetReference",
+												"parameters": {
+													"Folder": "landing/trash/",
+													"Filename": "@item().name"
+												}
+											}
+										]
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "if-true",
 										"type": "Copy",
 										"dependsOn": [],
 										"policy": {
@@ -99,60 +156,6 @@
 												"type": "DatasetReference",
 												"parameters": {
 													"Folder": "@concat('landing/', substring(item().name, 0, indexof(item().name, '_')))",
-													"Filename": "@item().name"
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "DS_datalake_Binary",
-												"type": "DatasetReference",
-												"parameters": {
-													"Folder": "landing/trash/",
-													"Filename": "@item().name"
-												}
-											}
-										]
-									}
-								],
-								"ifTrueActivities": [
-									{
-										"name": "Copy data1",
-										"type": "Copy",
-										"dependsOn": [],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "BinarySource",
-												"storeSettings": {
-													"type": "AzureBlobFSReadSettings",
-													"recursive": true
-												},
-												"formatSettings": {
-													"type": "BinaryReadSettings"
-												}
-											},
-											"sink": {
-												"type": "BinarySink",
-												"storeSettings": {
-													"type": "AzureBlobFSWriteSettings"
-												}
-											},
-											"enableStaging": false
-										},
-										"inputs": [
-											{
-												"referenceName": "DS_datalake_Binary",
-												"type": "DatasetReference",
-												"parameters": {
-													"Folder": "landing/trash/",
 													"Filename": "@item().name"
 												}
 											}

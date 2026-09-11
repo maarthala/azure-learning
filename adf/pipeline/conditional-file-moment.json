@@ -91,8 +91,44 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
+											"source": {
+												"type": "BinarySource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true
+												},
+												"formatSettings": {
+													"type": "BinaryReadSettings"
+												}
+											},
+											"sink": {
+												"type": "BinarySink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												}
+											},
 											"enableStaging": false
-										}
+										},
+										"inputs": [
+											{
+												"referenceName": "DS_datalake_Binary",
+												"type": "DatasetReference",
+												"parameters": {
+													"Folder": "@concat('landing/', substring(item().name, 0, indexof(item().name, '_')))",
+													"Filename": "@item().name"
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DS_datalake_Binary",
+												"type": "DatasetReference",
+												"parameters": {
+													"Folder": "landing/trash/",
+													"Filename": "@item().name"
+												}
+											}
+										]
 									}
 								],
 								"ifTrueActivities": [

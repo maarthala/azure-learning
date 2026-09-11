@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
-				"type": "Lookup",
+				"name": "Copy data1",
+				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -13,7 +13,84 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['userId']"
+								},
+								"sink": {
+									"name": "userId",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['title']"
+								},
+								"sink": {
+									"name": "title",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['body']"
+								},
+								"sink": {
+									"name": "body",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "get_data",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_storage",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []

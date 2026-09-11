@@ -212,8 +212,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "validSources",
-								"value": ""
+								"variableName": "v3",
+								"value": "@contains(\n\t\tconcat(',',variables('validSources'),','),\n\t\tconcat(',',substring(item().name,0,indexof(item().name,'_')),','))"
 							}
 						}
 					]
@@ -230,6 +230,9 @@
 			},
 			"v2": {
 				"type": "String"
+			},
+			"v3": {
+				"type": "Boolean"
 			}
 		},
 		"annotations": []

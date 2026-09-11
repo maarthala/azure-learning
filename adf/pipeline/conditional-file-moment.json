@@ -215,6 +215,20 @@
 								"variableName": "v3",
 								"value": "@contains(\n\t\tconcat(',',variables('validSources'),','),\n\t\tconcat(',',substring(item().name,0,indexof(item().name,'_')),','))"
 							}
+						},
+						{
+							"name": "Set variable4",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v4",
+								"value": "@equals(\n\titem().type,'File')"
+							}
 						}
 					]
 				}

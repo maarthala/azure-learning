@@ -17,23 +17,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "customer_id",
-				"type": "String"
-			},
-			{
-				"name": "name",
-				"type": "String"
-			},
-			{
-				"name": "city",
-				"type": "String"
-			},
-			{
-				"name": "rn",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

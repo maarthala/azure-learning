@@ -33,18 +33,37 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkCustomer"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_sink_to_gold",
+						"type": "DatasetReference"
+					},
+					"name": "customerSalesAmount"
 				}
 			],
 			"transformations": [
 				{
-					"name": "join8"
+					"name": "joinOrdersProducts"
 				},
 				{
-					"name": "join9"
+					"name": "selectRequiredColumns"
+				},
+				{
+					"name": "JoinOrderDetailsCustomers"
+				},
+				{
+					"name": "aggCustomerOrderTotalAmount"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          customer_id as string,",
+				"          name as string,",
+				"          city as string,",
+				"          rn as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
@@ -60,26 +79,54 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          product_id as string,",
+				"          product_name as string,",
+				"          category as string,",
+				"          price as double,",
+				"          rn as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/*.csv']) ~> readProducts",
-				"readProducts join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"readOrders, readProducts join(readOrders@product_id == readProducts@product_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join8",
-				"readOrders join(joinType:'inner',",
+				"     broadcast: 'auto')~> joinOrdersProducts",
+				"joinOrdersProducts select(mapColumn(",
+				"          order_id,",
+				"          order_date,",
+				"          quantity,",
+				"          product_name,",
+				"          price,",
+				"          customer_id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectRequiredColumns",
+				"selectRequiredColumns, readCustomers join(selectRequiredColumns@customer_id == readCustomers@customer_id,",
+				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join9",
+				"     broadcast: 'auto')~> JoinOrderDetailsCustomers",
+				"JoinOrderDetailsCustomers aggregate(groupBy(selectRequiredColumns@customer_id,",
+				"          name),",
+				"     totalAmont = sum(quantity*price)) ~> aggCustomerOrderTotalAmount",
 				"readCustomers sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sinkCustomer"
+				"     skipDuplicateMapOutputs: true) ~> sinkCustomer",
+				"aggCustomerOrderTotalAmount sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> customerSalesAmount"
 			]
 		}
 	}

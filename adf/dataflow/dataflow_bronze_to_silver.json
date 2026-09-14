@@ -17,22 +17,36 @@
 						"type": "DatasetReference"
 					},
 					"name": "readOrders"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_products_csv",
+						"type": "DatasetReference"
+					},
+					"name": "readProducts"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_silver",
+						"referenceName": "ds_silver_customers",
 						"type": "DatasetReference"
 					},
 					"name": "storeCustomersToSilverLayer"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_silver",
+						"referenceName": "ds_silver_orders",
 						"type": "DatasetReference"
 					},
 					"name": "storeOrdersToSilver"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_silver_products",
+						"type": "DatasetReference"
+					},
+					"name": "storeProductsToSilver"
 				}
 			],
 			"transformations": [
@@ -47,6 +61,12 @@
 				},
 				{
 					"name": "filterRankOrders"
+				},
+				{
+					"name": "removeDuplicateProducts"
+				},
+				{
+					"name": "filterRankProducts"
 				}
 			],
 			"scriptLines": [
@@ -68,6 +88,15 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readOrders",
+				"source(output(",
+				"          product_id as string,",
+				"          product_name as string,",
+				"          category as string,",
+				"          price as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> readProducts",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateCustomers",
@@ -76,20 +105,32 @@
 				"     asc(order_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateOrders",
 				"removeDuplicateOrders filter(rn == 1) ~> filterRankOrders",
+				"readProducts window(over(product_id),",
+				"     asc(product_id, true),",
+				"     rn = rowNumber()) ~> removeDuplicateProducts",
+				"removeDuplicateProducts filter(rn == 1) ~> filterRankProducts",
 				"filterRankCustomers sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> storeCustomersToSilverLayer",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1) ~> storeCustomersToSilverLayer",
 				"filterRankOrders sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> storeOrdersToSilver"
+				"     skipDuplicateMapOutputs: true) ~> storeOrdersToSilver",
+				"filterRankProducts sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> storeProductsToSilver"
 			]
 		}
 	}

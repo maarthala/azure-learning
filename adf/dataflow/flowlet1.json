@@ -16,22 +16,11 @@
 					"name": "select1"
 				},
 				{
-					"name": "dedupByKey"
-				},
-				{
 					"name": "input"
 				}
 			],
 			"scriptLines": [
-				"input(output(",
-				"          pKey as string",
-				"     ),",
-				"     order: 0,",
-				"     allowSchemaDrift: true) ~> dedupByKey",
-				"input(output(",
-				"          keyCol as string",
-				"     ),",
-				"     order: 1,",
+				"input(order: 0,",
 				"     allowSchemaDrift: true) ~> input",
 				"input window(over(keyCol),",
 				"     asc(keyCol, true),",

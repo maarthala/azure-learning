@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "readCustomers"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_orders_csv",
+						"type": "DatasetReference"
+					},
+					"name": "readOrders"
 				}
 			],
 			"sinks": [
@@ -18,15 +25,28 @@
 						"referenceName": "ds_silver",
 						"type": "DatasetReference"
 					},
-					"name": "storeToSilverLayer"
+					"name": "storeCustomersToSilverLayer"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_silver",
+						"type": "DatasetReference"
+					},
+					"name": "storeOrdersToSilver"
 				}
 			],
 			"transformations": [
 				{
-					"name": "removeDuplicates"
+					"name": "removeDuplicateCustomers"
 				},
 				{
-					"name": "filterRank"
+					"name": "filterRankCustomers"
+				},
+				{
+					"name": "removeDuplicateOrders"
+				},
+				{
+					"name": "filterRankOrders"
 				}
 			],
 			"scriptLines": [
@@ -38,17 +58,38 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readCustomers",
+				"source(output(",
+				"          order_id as string,",
+				"          order_date as string,",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> readOrders",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
-				"     rn = rowNumber()) ~> removeDuplicates",
-				"removeDuplicates filter(rn == 1) ~> filterRank",
-				"filterRank sink(allowSchemaDrift: true,",
+				"     rn = rowNumber()) ~> removeDuplicateCustomers",
+				"removeDuplicateCustomers filter(rn == 1) ~> filterRankCustomers",
+				"readOrders window(over(order_id),",
+				"     asc(order_id, true),",
+				"     rn = rowNumber()) ~> removeDuplicateOrders",
+				"removeDuplicateOrders filter(rn == 1) ~> filterRankOrders",
+				"filterRankCustomers sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> storeToSilverLayer"
+				"     skipDuplicateMapOutputs: true) ~> storeCustomersToSilverLayer",
+				"filterRankOrders sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> storeOrdersToSilver"
 			]
 		}
 	}

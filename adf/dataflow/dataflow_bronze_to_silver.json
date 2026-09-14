@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_readFromSilver",
+						"referenceName": "ds_readFromBronze",
 						"type": "DatasetReference"
 					},
 					"name": "readCustomers"
@@ -85,6 +85,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
+				"     partitionRootPath: 'customers/*.csv',",
 				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
 				"source(output(",
 				"          customer_id as string,",

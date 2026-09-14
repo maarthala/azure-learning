@@ -1,5 +1,5 @@
 {
-	"name": "flowlet1",
+	"name": "flowlet_dedup",
 	"properties": {
 		"type": "Flowlet",
 		"typeProperties": {

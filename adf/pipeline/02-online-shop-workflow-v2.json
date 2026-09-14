@@ -63,7 +63,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow_bronze_to_silver",
+						"referenceName": "dataflow_bronze_to_silver_v2",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"storeCustomersToSilverLayer": {

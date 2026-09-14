@@ -20,6 +20,9 @@
 				},
 				{
 					"name": "input"
+				},
+				{
+					"name": "output1"
 				}
 			],
 			"scriptLines": [
@@ -33,13 +36,12 @@
 				"     rn = rowNumber()) ~> window",
 				"window filter(rn == 1) ~> filter1",
 				"filter1 select(mapColumn(",
-				"          keyCol,",
-				"          rn,",
 				"          each(match(name != 'keyCol' && name != 'rn'))",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"input derive(keyCol = toString(byName($pKey))) ~> derivedKey"
+				"input derive(keyCol = toString(byName($pKey))) ~> derivedKey",
+				"select1 output() ~> output1"
 			]
 		}
 	}

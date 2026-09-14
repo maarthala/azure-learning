@@ -1,5 +1,5 @@
 {
-	"name": "get_data",
+	"name": "get_http_data",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_HTTP",

@@ -101,7 +101,12 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow_silver_to_gold",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sinkCustomer": {
+								"folderName": "customers"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,

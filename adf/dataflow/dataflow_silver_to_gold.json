@@ -32,7 +32,7 @@
 						"referenceName": "ds_sink_to_gold",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sinkCustomer"
 				}
 			],
 			"transformations": [],
@@ -55,7 +55,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sinkCustomer"
 			]
 		}
 	}

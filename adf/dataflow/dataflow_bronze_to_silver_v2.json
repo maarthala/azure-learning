@@ -79,6 +79,12 @@
 							"pKey": "product_id"
 						}
 					}
+				},
+				{
+					"name": "filterOrdersBadData"
+				},
+				{
+					"name": "filterProductBadData"
 				}
 			],
 			"scriptLines": [
@@ -116,14 +122,16 @@
 				"          pKey = customer_id",
 				"     ),",
 				"     composition: 'flowlet_dedup') ~> flowletDedubCustomers@(output1)",
-				"readOrders compose(mapParameter(",
+				"filterOrdersBadData compose(mapParameter(",
 				"          pKey = order_idproduct_id",
 				"     ),",
 				"     composition: 'flowlet_dedup') ~> flowletDedubOrders@(output1)",
-				"readProducts compose(mapParameter(",
+				"filterProductBadData compose(mapParameter(",
 				"          pKey = product_id",
 				"     ),",
 				"     composition: 'flowlet_dedup') ~> flowletDedubProducts@(output1)",
+				"readOrders filter(!isNull(quantity) && quantity > 0) ~> filterOrdersBadData",
+				"readProducts filter(!isNull(price)) ~> filterProductBadData",
 				"flowletDedubCustomers@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",

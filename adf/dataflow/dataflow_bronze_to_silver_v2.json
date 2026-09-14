@@ -51,31 +51,25 @@
 			],
 			"transformations": [
 				{
-					"name": "removeDuplicateCustomers"
+					"name": "flowletDedubCustomers",
+					"flowlet": {
+						"referenceName": "flowlet_dedup",
+						"type": "DataFlowReference"
+					}
 				},
 				{
-					"name": "filterRankCustomers"
+					"name": "flowletDedubOrders",
+					"flowlet": {
+						"referenceName": "flowlet_dedup",
+						"type": "DataFlowReference"
+					}
 				},
 				{
-					"name": "removeDuplicateOrders"
-				},
-				{
-					"name": "filterRankOrders"
-				},
-				{
-					"name": "removeDuplicateProducts"
-				},
-				{
-					"name": "filterRankProducts"
-				},
-				{
-					"name": "filterOrderBadData"
-				},
-				{
-					"name": "filterProductsRemoveBadData"
-				},
-				{
-					"name": "dedupByKey"
+					"name": "flowletDedubProducts",
+					"flowlet": {
+						"referenceName": "flowlet_dedup",
+						"type": "DataFlowReference"
+					}
 				}
 			],
 			"scriptLines": [
@@ -109,22 +103,19 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/products.csv']) ~> readProducts",
-				"compose(composition: 'undefined') ~> dedupByKey@(temporary)",
-				"readCustomers window(over(customer_id),",
-				"     asc(customer_id, true),",
-				"     rn = rowNumber()) ~> removeDuplicateCustomers",
-				"removeDuplicateCustomers filter(rn == 1) ~> filterRankCustomers",
-				"filterOrderBadData window(over(order_id),",
-				"     asc(order_id, true),",
-				"     rn = rowNumber()) ~> removeDuplicateOrders",
-				"removeDuplicateOrders filter(rn == 1) ~> filterRankOrders",
-				"filterProductsRemoveBadData window(over(product_id),",
-				"     asc(product_id, true),",
-				"     rn = rowNumber()) ~> removeDuplicateProducts",
-				"removeDuplicateProducts filter(rn == 1) ~> filterRankProducts",
-				"readOrders filter(!isNull(quantity) && quantity > 0) ~> filterOrderBadData",
-				"readProducts filter(!isNull(price)) ~> filterProductsRemoveBadData",
-				"filterRankCustomers sink(allowSchemaDrift: true,",
+				"readCustomers compose(mapParameter(",
+				"          pKey = ",
+				"     ),",
+				"     composition: 'flowlet_dedup') ~> flowletDedubCustomers@(output1)",
+				"readOrders compose(mapParameter(",
+				"          pKey = ",
+				"     ),",
+				"     composition: 'flowlet_dedup') ~> flowletDedubOrders@(output1)",
+				"readProducts compose(mapParameter(",
+				"          pKey = ",
+				"     ),",
+				"     composition: 'flowlet_dedup') ~> flowletDedubProducts@(output1)",
+				"flowletDedubCustomers@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
@@ -132,14 +123,14 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1) ~> storeCustomersToSilverLayer",
-				"filterRankOrders sink(allowSchemaDrift: true,",
+				"flowletDedubOrders@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> storeOrdersToSilver",
-				"filterRankProducts sink(allowSchemaDrift: true,",
+				"flowletDedubProducts@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",

@@ -13,14 +13,14 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_readFromSilver",
+						"referenceName": "ds_readFromBronze",
 						"type": "DatasetReference"
 					},
 					"name": "readOrders"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_readFromSilver",
+						"referenceName": "ds_readFromBronze",
 						"type": "DatasetReference"
 					},
 					"name": "readProducts"

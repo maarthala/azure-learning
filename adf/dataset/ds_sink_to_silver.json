@@ -1,5 +1,5 @@
 {
-	"name": "ds_silver_customers",
+	"name": "ds_sink_to_silver",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_DataStorage",

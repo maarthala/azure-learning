@@ -50,7 +50,7 @@
 				]
 			},
 			{
-				"name": "customers_data_flow",
+				"name": "data_flow_to_silver",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {

@@ -5,28 +5,25 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "ds_readFromSilver",
+						"type": "DatasetReference"
+					},
 					"name": "readCustomers"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_orders_csv",
+						"referenceName": "ds_readFromSilver",
 						"type": "DatasetReference"
 					},
 					"name": "readOrders"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_products_csv",
+						"referenceName": "ds_readFromSilver",
 						"type": "DatasetReference"
 					},
 					"name": "readProducts"
-				},
-				{
-					"dataset": {
-						"referenceName": "readCustomersFromSilver",
-						"type": "DatasetReference"
-					},
-					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -79,27 +76,6 @@
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> readCustomers",
-				"source(output(",
-				"          order_id as string,",
-				"          order_date as date 'yyyy-MM-dd',",
-				"          customer_id as string,",
-				"          product_id as string,",
-				"          quantity as integer",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> readOrders",
-				"source(output(",
-				"          product_id as string,",
-				"          product_name as string,",
-				"          category as string,",
-				"          price as double",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> readProducts",
 				"source(output(",
 				"          customer_id as string,",
 				"          name as string,",
@@ -109,7 +85,27 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     wildcardPaths:['customers/*.csv']) ~> source1",
+				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
+				"source(output(",
+				"          customer_id as string,",
+				"          name as string,",
+				"          city as string,",
+				"          rn as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
+				"source(output(",
+				"          customer_id as string,",
+				"          name as string,",
+				"          city as string,",
+				"          rn as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['products/*.csv']) ~> readProducts",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateCustomers",

@@ -1,0 +1,17 @@
+{
+	"name": "ds_customers_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_DataStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "landing"
+			}
+		}
+	}
+}

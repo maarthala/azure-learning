@@ -71,18 +71,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow_bronze_to_silver_v2",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"storeCustomersToSilverLayer": {
-								"folderName": "customers"
-							},
-							"storeOrdersToSilver": {
-								"folderName": "orders"
-							},
-							"storeProductsToSilver": {
-								"folderName": "products"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,

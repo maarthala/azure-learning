@@ -73,6 +73,9 @@
 				},
 				{
 					"name": "filterProductsRemoveBadData"
+				},
+				{
+					"name": "dedupByKey"
 				}
 			],
 			"scriptLines": [
@@ -106,6 +109,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/products.csv']) ~> readProducts",
+				"compose(composition: 'undefined') ~> dedupByKey@(temporary)",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateCustomers",

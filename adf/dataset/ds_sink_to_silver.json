@@ -5,11 +5,17 @@
 			"referenceName": "LS_DataStorage",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"folderName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": " @dataset().folderName",
 				"fileSystem": "silver"
 			},
 			"columnDelimiter": ",",

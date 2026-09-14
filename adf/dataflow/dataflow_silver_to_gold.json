@@ -17,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "readProducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_readFromSilver",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
 				}
 			],
 			"sinks": [
@@ -66,6 +73,16 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/*.csv']) ~> readProducts",
+				"source(output(",
+				"          customer_id as string,",
+				"          name as string,",
+				"          city as string,",
+				"          rn as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['customers/*.csv']) ~> customers",
 				"readOrders, readProducts join(readOrders@product_id == readProducts@product_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -81,12 +98,12 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectRequiredColumns",
-				"selectRequiredColumns join(selectRequiredColumns@customer_id == readCustomers@customer_id,",
+				"selectRequiredColumns, customers join(selectRequiredColumns@customer_id == customers@customer_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinOrderDetailsCustomers",
-				"JoinOrderDetailsCustomers aggregate(groupBy(customer_id = selectRequiredColumns@customer_id,",
+				"JoinOrderDetailsCustomers aggregate(groupBy(customers@customer_id,",
 				"          name),",
 				"     totalAmont = sum(quantity*price)) ~> aggCustomerOrderTotalAmount",
 				"aggCustomerOrderTotalAmount sink(allowSchemaDrift: true,",

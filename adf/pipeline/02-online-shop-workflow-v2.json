@@ -100,7 +100,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow_silver_to_gold",
+						"referenceName": "dataflow_silver_to_gold_v2",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"customerSalesAmount": {
@@ -116,6 +116,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "online-shop-pipeline"
+		},
 		"annotations": []
 	}
 }

@@ -105,9 +105,6 @@
 						"datasetParameters": {
 							"sinkCustomer": {
 								"folderName": "customers"
-							},
-							"customerSalesAmount": {
-								"folderName": "customerSales"
 							}
 						}
 					},

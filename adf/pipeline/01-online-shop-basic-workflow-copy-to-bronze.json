@@ -101,28 +101,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow_silver_to_gold",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"readCustomers": {
-								"folderName": "customers"
-							},
-							"storeCustomersToSilverLayer": {
-								"folderName": "customers"
-							},
-							"storeOrdersToSilver": {
-								"folderName": "orders"
-							},
-							"storeProductsToSilver": {
-								"folderName": "products"
-							}
-						},
-						"linkedServiceParameters": {
-							"readCustomers": {
-								"schemaLinkedService": {
-									"folderName": "customers"
-								}
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,

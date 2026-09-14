@@ -103,8 +103,8 @@
 						"referenceName": "dataflow_silver_to_gold",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"sinkCustomer": {
-								"folderName": "customers"
+							"customerSalesAmount": {
+								"folderName": "customerSales"
 							}
 						}
 					},

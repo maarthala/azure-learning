@@ -5,10 +5,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_silver_customers",
-						"type": "DatasetReference"
-					},
 					"name": "readCustomers"
 				},
 				{
@@ -24,6 +20,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "readProducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "readCustomersFromSilver",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -77,8 +80,7 @@
 			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> readCustomers",
+				"     validateSchema: false) ~> readCustomers",
 				"source(output(",
 				"          order_id as string,",
 				"          order_date as date 'yyyy-MM-dd',",
@@ -98,6 +100,16 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readProducts",
+				"source(output(",
+				"          customer_id as string,",
+				"          name as string,",
+				"          city as string,",
+				"          rn as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['customers/*.csv']) ~> source1",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateCustomers",

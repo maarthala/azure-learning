@@ -36,7 +36,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_silver_customers",
+						"referenceName": "ds_sink_to_silver",
 						"type": "DatasetReference"
 					},
 					"name": "storeCustomersToSilverLayer"

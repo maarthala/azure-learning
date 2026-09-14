@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_customers_csv",
+						"referenceName": "ds_silver_customers",
 						"type": "DatasetReference"
 					},
 					"name": "readCustomers"
@@ -76,12 +76,7 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          customer_id as string,",
-				"          name as string,",
-				"          city as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readCustomers",
 				"source(output(",

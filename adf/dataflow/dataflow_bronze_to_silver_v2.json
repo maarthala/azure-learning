@@ -29,21 +29,21 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_sink_to_silver",
+						"referenceName": "ds_sink_to_silver_parquet",
 						"type": "DatasetReference"
 					},
 					"name": "storeCustomersToSilverLayer"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_sink_to_silver",
+						"referenceName": "ds_sink_to_silver_parquet",
 						"type": "DatasetReference"
 					},
 					"name": "storeOrdersToSilver"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_sink_to_silver",
+						"referenceName": "ds_sink_to_silver_parquet",
 						"type": "DatasetReference"
 					},
 					"name": "storeProductsToSilver"
@@ -155,6 +155,7 @@
 				"readProducts derive(dedupKey = product_id) ~> derivedColumnProduct",
 				"flowletDedubCustomers@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
@@ -163,6 +164,7 @@
 				"     saveOrder: 1) ~> storeCustomersToSilverLayer",
 				"flowletDedubOrders@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
@@ -170,6 +172,7 @@
 				"     skipDuplicateMapOutputs: true) ~> storeOrdersToSilver",
 				"flowletDedubProducts@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",

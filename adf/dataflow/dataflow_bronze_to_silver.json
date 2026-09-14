@@ -43,14 +43,14 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_silver_orders",
+						"referenceName": "ds_sink_to_silver",
 						"type": "DatasetReference"
 					},
 					"name": "storeOrdersToSilver"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_silver_products",
+						"referenceName": "ds_sink_to_silver",
 						"type": "DatasetReference"
 					},
 					"name": "storeProductsToSilver"

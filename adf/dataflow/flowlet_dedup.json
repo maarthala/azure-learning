@@ -16,9 +16,6 @@
 					"name": "select1"
 				},
 				{
-					"name": "derivedKey"
-				},
-				{
 					"name": "input"
 				},
 				{
@@ -29,18 +26,20 @@
 				"parameters{",
 				"     pKey as string",
 				"}",
-				"input(order: 0,",
+				"input(output(",
+				"          dedupKey as string",
+				"     ),",
+				"     order: 0,",
 				"     allowSchemaDrift: true) ~> input",
-				"derivedKey window(over(keyCol),",
+				"input window(over(dedupKey),",
 				"     asc(keyCol, true),",
 				"     rn = rowNumber()) ~> window",
 				"window filter(rn == 1) ~> filter1",
 				"filter1 select(mapColumn(",
-				"          each(match(name != 'keyCol' && name != 'rn'))",
+				"          each(match(name != 'dedupKey' && name != 'rn'))",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"input derive(keyCol = toString(byName($pKey))) ~> derivedKey",
 				"select1 output() ~> output1"
 			]
 		}

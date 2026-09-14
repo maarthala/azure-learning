@@ -9,13 +9,6 @@
 						"referenceName": "ds_readFromSilver",
 						"type": "DatasetReference"
 					},
-					"name": "readCustomers"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_readFromSilver",
-						"type": "DatasetReference"
-					},
 					"name": "readOrders"
 				},
 				{
@@ -27,13 +20,6 @@
 				}
 			],
 			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "ds_sink_to_gold",
-						"type": "DatasetReference"
-					},
-					"name": "sinkCustomer"
-				},
 				{
 					"dataset": {
 						"referenceName": "ds_sink_to_gold",
@@ -57,16 +43,6 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          customer_id as string,",
-				"          name as string,",
-				"          city as string,",
-				"          rn as boolean",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
 				"source(output(",
 				"          order_id as string,",
 				"          order_date as date,",
@@ -105,21 +81,14 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectRequiredColumns",
-				"selectRequiredColumns, readCustomers join(selectRequiredColumns@customer_id == readCustomers@customer_id,",
+				"selectRequiredColumns join(selectRequiredColumns@customer_id == readCustomers@customer_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinOrderDetailsCustomers",
-				"JoinOrderDetailsCustomers aggregate(groupBy(selectRequiredColumns@customer_id,",
+				"JoinOrderDetailsCustomers aggregate(groupBy(customer_id = selectRequiredColumns@customer_id,",
 				"          name),",
 				"     totalAmont = sum(quantity*price)) ~> aggCustomerOrderTotalAmount",
-				"readCustomers sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sinkCustomer",
 				"aggCustomerOrderTotalAmount sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",

@@ -85,6 +85,9 @@
 				},
 				{
 					"name": "filterProductBadData"
+				},
+				{
+					"name": "derivedColumnCustomer"
 				}
 			],
 			"scriptLines": [
@@ -118,7 +121,7 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/products.csv']) ~> readProducts",
-				"readCustomers compose(mapParameter(",
+				"derivedColumnCustomer compose(mapParameter(",
 				"          pKey = customer_id",
 				"     ),",
 				"     mapColumn(",
@@ -141,6 +144,7 @@
 				"     composition: 'flowlet_dedup') ~> flowletDedubProducts@(output1)",
 				"readOrders filter(!isNull(quantity) && quantity > 0) ~> filterOrdersBadData",
 				"readProducts filter(!isNull(price)) ~> filterProductBadData",
+				"readCustomers derive(customer_id = ERROR_FUNCTION('')) ~> derivedColumnCustomer",
 				"flowletDedubCustomers@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",

@@ -67,6 +67,12 @@
 				},
 				{
 					"name": "filterRankProducts"
+				},
+				{
+					"name": "filterOrderBadData"
+				},
+				{
+					"name": "filterProductsRemoveBadData"
 				}
 			],
 			"scriptLines": [
@@ -80,10 +86,10 @@
 				"     ignoreNoFilesFound: false) ~> readCustomers",
 				"source(output(",
 				"          order_id as string,",
-				"          order_date as string,",
+				"          order_date as date 'yyyy-MM-dd',",
 				"          customer_id as string,",
 				"          product_id as string,",
-				"          quantity as string",
+				"          quantity as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -92,7 +98,7 @@
 				"          product_id as string,",
 				"          product_name as string,",
 				"          category as string,",
-				"          price as string",
+				"          price as double",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -101,14 +107,16 @@
 				"     asc(customer_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateCustomers",
 				"removeDuplicateCustomers filter(rn == 1) ~> filterRankCustomers",
-				"readOrders window(over(order_id),",
+				"filterOrderBadData window(over(order_id),",
 				"     asc(order_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateOrders",
 				"removeDuplicateOrders filter(rn == 1) ~> filterRankOrders",
-				"readProducts window(over(product_id),",
+				"filterProductsRemoveBadData window(over(product_id),",
 				"     asc(product_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateProducts",
 				"removeDuplicateProducts filter(rn == 1) ~> filterRankProducts",
+				"readOrders filter(!isNull(quantity) && quantity > 0) ~> filterOrderBadData",
+				"readProducts filter(!isNull(price)) ~> filterProductsRemoveBadData",
 				"filterRankCustomers sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",

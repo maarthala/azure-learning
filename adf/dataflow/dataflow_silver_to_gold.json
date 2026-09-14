@@ -10,6 +10,20 @@
 						"type": "DatasetReference"
 					},
 					"name": "readCustomers"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_readFromSilver",
+						"type": "DatasetReference"
+					},
+					"name": "readOrders"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_readFromSilver",
+						"type": "DatasetReference"
+					},
+					"name": "readProducts"
 				}
 			],
 			"sinks": [
@@ -27,6 +41,14 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     wildcardPaths:['products/*.csv']) ~> readProducts",
 				"readCustomers sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",

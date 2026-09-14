@@ -1,5 +1,5 @@
 {
-	"name": "readCustomersFromSilver",
+	"name": "ds_readFromSilver",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_DataStorage",

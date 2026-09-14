@@ -24,13 +24,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "readProducts"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
-					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -113,10 +106,6 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/products.csv']) ~> readProducts",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     wildcardPaths:['products/*.csv']) ~> source1",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
 				"     rn = rowNumber()) ~> removeDuplicateCustomers",

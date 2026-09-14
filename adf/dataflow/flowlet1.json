@@ -16,13 +16,19 @@
 					"name": "select1"
 				},
 				{
+					"name": "derivedKey"
+				},
+				{
 					"name": "input"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     pKey as string",
+				"}",
 				"input(order: 0,",
 				"     allowSchemaDrift: true) ~> input",
-				"input window(over(keyCol),",
+				"derivedKey window(over(keyCol),",
 				"     asc(keyCol, true),",
 				"     rn = rowNumber()) ~> window",
 				"window filter(rn == 1) ~> filter1",
@@ -32,7 +38,8 @@
 				"          each(match(name != 'keyCol' && name != 'rn'))",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"input derive(keyCol = toString(byName($pKey))) ~> derivedKey"
 			]
 		}
 	}

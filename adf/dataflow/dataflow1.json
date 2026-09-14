@@ -6,40 +6,49 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "get_data",
+						"referenceName": "ds_customers_csv",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "readCustomers"
 				}
 			],
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_storage",
+						"referenceName": "ds_silver",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "storeToSilverLayer"
 				}
 			],
 			"transformations": [
 				{
-					"name": "filter1",
-					"description": "loyalty_tier != 'none'"
+					"name": "removeDuplicates"
+				},
+				{
+					"name": "filterRank"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          customer_id as string,",
+				"          name as string,",
+				"          city as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> source1",
-				"source1 filter(loyalty_tier != 'none') ~> filter1",
-				"filter1 sink(allowSchemaDrift: true,",
+				"     ignoreNoFilesFound: false) ~> readCustomers",
+				"readCustomers window(over(customer_id),",
+				"     asc(customer_id, true),",
+				"     rn = rowNumber()) ~> removeDuplicates",
+				"removeDuplicates filter(rn == 1) ~> filterRank",
+				"filterRank sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> storeToSilverLayer"
 			]
 		}
 	}

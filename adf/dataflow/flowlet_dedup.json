@@ -32,7 +32,6 @@
 				"     order: 0,",
 				"     allowSchemaDrift: true) ~> input",
 				"input window(over(dedupKey),",
-				"     asc(dedupKey, true),",
 				"     rn = rowNumber()) ~> window",
 				"window filter(rn == 1) ~> filter1",
 				"filter1 select(mapColumn(",

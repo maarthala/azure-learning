@@ -5,6 +5,8 @@
 			{
 				"name": "copy-to-bronze",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -50,14 +52,7 @@
 			{
 				"name": "data_flow_to_silver",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "copy-to-bronze",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -92,14 +87,9 @@
 			{
 				"name": "data_flow_to_gold",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "data_flow_to_silver",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,

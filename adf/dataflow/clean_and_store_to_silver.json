@@ -45,7 +45,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readCsvFile",
-				"readCsvFile derive(dedupKey = byName($pKey)) ~> dedupColumn",
+				"readCsvFile derive(dedupKey = byName($pkey)) ~> dedupColumn",
 				"dedupColumn compose(mapColumn(",
 				"          dedupKey",
 				"     ),",

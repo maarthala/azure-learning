@@ -136,7 +136,10 @@
 											}
 										},
 										"storeToSilver": {
-											"path": "silver"
+											"path": {
+												"value": "@concat('silver/', replace(item().file, '.csv', ''))",
+												"type": "Expression"
+											}
 										}
 									}
 								},

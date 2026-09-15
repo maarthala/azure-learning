@@ -5,47 +5,23 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
 					"name": "readCustomers"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
 					"name": "readOrders"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
 					"name": "readProducts"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_silver",
-						"type": "DatasetReference"
-					},
 					"name": "storeCustomersToSilverLayer"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_silver",
-						"type": "DatasetReference"
-					},
 					"name": "storeOrdersToSilver"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_silver",
-						"type": "DatasetReference"
-					},
 					"name": "storeProductsToSilver"
 				}
 			],
@@ -104,7 +80,6 @@
 				"     ),",
 				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
 				"source(output(",
 				"          order_id as string,",
@@ -115,7 +90,6 @@
 				"     ),",
 				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
 				"source(output(",
 				"          product_id as string,",
@@ -125,7 +99,6 @@
 				"     ),",
 				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/products.csv']) ~> readProducts",
 				"derivedColumCust compose(mapParameter(",
 				"          pKey = customer_id",
@@ -155,29 +128,26 @@
 				"readProducts derive(dedupKey = product_id) ~> derivedColumnProduct",
 				"flowletDedubCustomers@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     format: 'parquet') ~> storeCustomersToSilverLayer",
 				"flowletDedubOrders@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     rowFolderUrlColumn:'',",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     format: 'parquet') ~> storeOrdersToSilver",
 				"flowletDedubProducts@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     format: 'parquet') ~> storeProductsToSilver"
 			]
 		}

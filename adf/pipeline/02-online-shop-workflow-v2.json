@@ -33,19 +33,7 @@
 						}
 					},
 					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_customers_data",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_bronze",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			},
 			{
 				"name": "data_flow_to_silver",

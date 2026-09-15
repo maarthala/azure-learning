@@ -36,61 +36,8 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['userId']"
-								},
-								"sink": {
-									"name": "userId",
-									"type": "Int16"
-								}
-							},
-							{
-								"source": {
-									"path": "$['id']"
-								},
-								"sink": {
-									"name": "id",
-									"type": "Int16"
-								}
-							},
-							{
-								"source": {
-									"path": "$['title']"
-								},
-								"sink": {
-									"name": "title",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['body']"
-								},
-								"sink": {
-									"name": "body",
-									"type": "String"
-								}
-							}
-						]
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "get_data",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_storage",
-						"type": "DatasetReference"
-					}
-				]
+					"enableStaging": false
+				}
 			}
 		],
 		"annotations": []

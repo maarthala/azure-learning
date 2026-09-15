@@ -5,33 +5,17 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_readFromSilver",
-						"type": "DatasetReference"
-					},
 					"name": "readOrders"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_readFromSilver",
-						"type": "DatasetReference"
-					},
 					"name": "readProducts"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_readFromSilver",
-						"type": "DatasetReference"
-					},
 					"name": "customers"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_gold",
-						"type": "DatasetReference"
-					},
 					"name": "customerSalesAmount"
 				}
 			],
@@ -60,7 +44,6 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
 				"source(output(",
 				"          product_id as string,",
@@ -71,7 +54,6 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/*.csv']) ~> readProducts",
 				"source(output(",
 				"          customer_id as string,",
@@ -81,7 +63,6 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['customers/*.csv']) ~> customers",
 				"readOrders, readProducts join(readOrders@product_id == readProducts@product_id,",
 				"     joinType:'inner',",
@@ -108,11 +89,10 @@
 				"     totalAmont = sum(quantity*price)) ~> aggCustomerOrderTotalAmount",
 				"aggCustomerOrderTotalAmount sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> customerSalesAmount"
+				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> customerSalesAmount"
 			]
 		}
 	}

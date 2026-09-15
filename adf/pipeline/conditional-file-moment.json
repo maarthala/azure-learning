@@ -15,10 +15,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataset": {
-						"referenceName": "DS_folder_binary",
-						"type": "DatasetReference"
-					},
 					"fieldList": [
 						"childItems"
 					],
@@ -163,32 +159,7 @@
 												}
 											},
 											"enableStaging": false
-										},
-										"inputs": [
-											{
-												"referenceName": "DS_datalake_file_root",
-												"type": "DatasetReference",
-												"parameters": {
-													"Filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "DS_datalake_Binary",
-												"type": "DatasetReference",
-												"parameters": {
-													"Folder": "trash",
-													"Filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											}
-										]
+										}
 									},
 									{
 										"name": "delete-original-trash",
@@ -210,16 +181,6 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"dataset": {
-												"referenceName": "DS_datalake_file_root",
-												"type": "DatasetReference",
-												"parameters": {
-													"Filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											},
 											"enableLogging": false,
 											"storeSettings": {
 												"type": "AzureBlobFSReadSettings",
@@ -259,35 +220,7 @@
 												}
 											},
 											"enableStaging": false
-										},
-										"inputs": [
-											{
-												"referenceName": "DS_datalake_file_root",
-												"type": "DatasetReference",
-												"parameters": {
-													"Filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "DS_datalake_Binary",
-												"type": "DatasetReference",
-												"parameters": {
-													"Folder": {
-														"value": "@substring(item().name, 0, indexof(item().name, '_'))",
-														"type": "Expression"
-													},
-													"Filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											}
-										]
+										}
 									},
 									{
 										"name": "delete-original-source",
@@ -309,16 +242,6 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"dataset": {
-												"referenceName": "DS_datalake_file_root",
-												"type": "DatasetReference",
-												"parameters": {
-													"Filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											},
 											"enableLogging": false,
 											"storeSettings": {
 												"type": "AzureBlobFSReadSettings",

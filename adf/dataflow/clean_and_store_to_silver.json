@@ -35,7 +35,7 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     pKey as string (@item().key)",
+				"     pkey as string ($pkey)",
 				"}",
 				"source(output(",
 				"          customer_id as string,",

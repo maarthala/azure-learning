@@ -29,21 +29,21 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_sink_to_silver_parquet",
+						"referenceName": "ds_sink_to_silver",
 						"type": "DatasetReference"
 					},
 					"name": "storeCustomersToSilverLayer"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_sink_to_silver_parquet",
+						"referenceName": "ds_sink_to_silver",
 						"type": "DatasetReference"
 					},
 					"name": "storeOrdersToSilver"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_sink_to_silver_parquet",
+						"referenceName": "ds_sink_to_silver",
 						"type": "DatasetReference"
 					},
 					"name": "storeProductsToSilver"
@@ -159,16 +159,15 @@
 				"flowletDedubOrders@output1 derive(yearMonth = toString(order_date, 'yyyyMM')) ~> derivedColumnParticianOrderDate",
 				"flowletDedubCustomers@output1 sink(allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1) ~> storeCustomersToSilverLayer",
+				"     saveOrder: 1,",
+				"     format: 'parquet') ~> storeCustomersToSilverLayer",
 				"derivedColumnParticianOrderDate sink(allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     format: 'parquet',",
 				"     rowFolderUrlColumn:'',",
 				"     umask: 0022,",
 				"     preCommands: [],",
@@ -178,15 +177,16 @@
 				"     partitionBy('key',",
 				"          0,",
 				"          yearMonth",
-				"     )) ~> storeOrdersToSilver",
+				"     ),",
+				"     format: 'parquet') ~> storeOrdersToSilver",
 				"flowletDedubProducts@output1 sink(allowSchemaDrift: false,",
 				"     validateSchema: false,",
-				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> storeProductsToSilver"
+				"     skipDuplicateMapOutputs: true,",
+				"     format: 'parquet') ~> storeProductsToSilver"
 			]
 		}
 	}

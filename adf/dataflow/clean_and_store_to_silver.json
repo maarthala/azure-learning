@@ -34,6 +34,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     pKey as string (@item().key)",
+				"}",
 				"source(output(",
 				"          customer_id as string,",
 				"          name as string,",
@@ -42,7 +45,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readCsvFile",
-				"readCsvFile derive(dedupKey = customer_id) ~> dedupColumn",
+				"readCsvFile derive(dedupKey = $pKey) ~> dedupColumn",
 				"dedupColumn compose(mapColumn(",
 				"          dedupKey",
 				"     ),",

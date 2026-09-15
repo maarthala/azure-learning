@@ -94,9 +94,6 @@
 				},
 				{
 					"name": "derivedColumnProduct"
-				},
-				{
-					"name": "derivedColumnParticianOrderDate"
 				}
 			],
 			"scriptLines": [
@@ -156,8 +153,7 @@
 				"readCustomers derive(dedupkey = customer_id) ~> derivedColumCust",
 				"readOrders derive(dedupKey = order_id) ~> derivedColumnOrders",
 				"readProducts derive(dedupKey = product_id) ~> derivedColumnProduct",
-				"flowletDedubOrders@output1 derive(yearMonth = toString(order_date, 'yyyyMM')) ~> derivedColumnParticianOrderDate",
-				"flowletDedubCustomers@output1 sink(allowSchemaDrift: false,",
+				"flowletDedubCustomers@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
@@ -166,7 +162,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
 				"     format: 'parquet') ~> storeCustomersToSilverLayer",
-				"derivedColumnParticianOrderDate sink(allowSchemaDrift: false,",
+				"flowletDedubOrders@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     rowFolderUrlColumn:'',",
 				"     umask: 0022,",
@@ -174,12 +170,8 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('key',",
-				"          0,",
-				"          yearMonth",
-				"     ),",
 				"     format: 'parquet') ~> storeOrdersToSilver",
-				"flowletDedubProducts@output1 sink(allowSchemaDrift: false,",
+				"flowletDedubProducts@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",

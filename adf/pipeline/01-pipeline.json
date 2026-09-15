@@ -57,6 +57,8 @@
 			{
 				"name": "read_bronze_metadata",
 				"type": "GetMetadata",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -91,7 +93,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "read_bronze_metadata",
+						"activity": "Lookup_controller_file",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -100,7 +102,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('read_bronze_metadata').output.childItems",
+						"value": "@activity('Lookup_controller_file').output.value",
 						"type": "Expression"
 					},
 					"activities": [
@@ -120,10 +122,16 @@
 								"dataflow": {
 									"referenceName": "clean_and_store_to_silver",
 									"type": "DataFlowReference",
+									"parameters": {
+										"pkey": {
+											"value": "'@{item().key}'",
+											"type": "Expression"
+										}
+									},
 									"datasetParameters": {
 										"readCsvFile": {
 											"path": {
-												"value": "@concat('bronze', '/', item().name)",
+												"value": "@concat('bronze', '/', item().file)",
 												"type": "Expression"
 											}
 										},
@@ -140,6 +148,42 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Lookup_controller_file",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "landing",
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"path": "landing/controller.json"
+						}
+					},
+					"firstRowOnly": false
 				}
 			}
 		],

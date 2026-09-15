@@ -23,9 +23,6 @@
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     pKey as string",
-				"}",
 				"input(output(",
 				"          dedupKey as string",
 				"     ),",
@@ -35,7 +32,7 @@
 				"     rn = rowNumber()) ~> window",
 				"window filter(rn == 1) ~> filter1",
 				"filter1 select(mapColumn(",
-				"          each(match(name != 'dedupKey' && name != 'rn'))",
+				"          each(match(name!='dedupKey'&&name!='rn'))",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",

@@ -1,0 +1,15 @@
+{
+	"name": "epireum-adf",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "swedencentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "91676575-9690-43d4-a2cc-d8e554bf9df8",
+		"tenantId": "42a97149-4b04-4e75-baf6-70ab77247c48"
+	}
+}

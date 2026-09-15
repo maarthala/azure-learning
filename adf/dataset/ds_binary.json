@@ -1,0 +1,22 @@
+{
+	"name": "ds_binary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_DataStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"path": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "landing"
+			}
+		}
+	}
+}

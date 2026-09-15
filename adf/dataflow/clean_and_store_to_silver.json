@@ -23,14 +23,14 @@
 			],
 			"transformations": [
 				{
-					"name": "dedupColumn"
-				},
-				{
 					"name": "clean",
 					"flowlet": {
 						"referenceName": "flowlet_dedup",
 						"type": "DataFlowReference"
 					}
+				},
+				{
+					"name": "dedupColumn"
 				}
 			],
 			"scriptLines": [
@@ -45,11 +45,11 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> readCsvFile",
-				"readCsvFile derive(dedupKey = byName($pkey)) ~> dedupColumn",
 				"dedupColumn compose(mapColumn(",
 				"          dedupKey",
 				"     ),",
 				"     composition: 'flowlet_dedup') ~> clean@(output1)",
+				"readCsvFile derive(dedupKey = byName($pkey)) ~> dedupColumn",
 				"clean@output1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",

@@ -124,7 +124,7 @@
 									"type": "DataFlowReference",
 									"parameters": {
 										"pkey": {
-											"value": "'@{item().key}'",
+											"value": "'@{item().pKey}'",
 											"type": "Expression"
 										}
 									},

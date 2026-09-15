@@ -99,6 +99,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('read_bronze_metadata').output.childItems",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "clearn_and_store",

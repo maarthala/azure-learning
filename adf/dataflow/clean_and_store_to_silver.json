@@ -12,8 +12,27 @@
 					"name": "readCsvFile"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_parquet",
+						"type": "DatasetReference"
+					},
+					"name": "storeToSilver"
+				}
+			],
+			"transformations": [
+				{
+					"name": "dedupColumn"
+				},
+				{
+					"name": "clean",
+					"flowlet": {
+						"referenceName": "flowlet_dedup",
+						"type": "DataFlowReference"
+					}
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          customer_id as string,",
@@ -22,7 +41,23 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> readCsvFile"
+				"     ignoreNoFilesFound: false) ~> readCsvFile",
+				"readCsvFile derive(dedupKey = customer_id) ~> dedupColumn",
+				"dedupColumn compose(mapParameter(",
+				"          pKey = ",
+				"     ),",
+				"     mapColumn(",
+				"          dedupKey",
+				"     ),",
+				"     composition: 'flowlet_dedup') ~> clean@(output1)",
+				"clean@output1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> storeToSilver"
 			]
 		}
 	}

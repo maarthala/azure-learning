@@ -5,47 +5,23 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
 					"name": "readCustomers"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
 					"name": "readOrders"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_readFromBronze",
-						"type": "DatasetReference"
-					},
 					"name": "readProducts"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_silver",
-						"type": "DatasetReference"
-					},
 					"name": "storeCustomersToSilverLayer"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_silver",
-						"type": "DatasetReference"
-					},
 					"name": "storeOrdersToSilver"
 				},
 				{
-					"dataset": {
-						"referenceName": "ds_sink_to_silver",
-						"type": "DatasetReference"
-					},
 					"name": "storeProductsToSilver"
 				}
 			],
@@ -83,7 +59,6 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['customers/*.csv']) ~> readCustomers",
 				"source(output(",
 				"          order_id as string,",
@@ -94,7 +69,6 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
 				"source(output(",
 				"          product_id as string,",
@@ -104,7 +78,6 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
 				"     wildcardPaths:['products/products.csv']) ~> readProducts",
 				"readCustomers window(over(customer_id),",
 				"     asc(customer_id, true),",
@@ -122,26 +95,23 @@
 				"readProducts filter(!isNull(price)) ~> filterProductsRemoveBadData",
 				"filterRankCustomers sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1) ~> storeCustomersToSilverLayer",
+				"     saveOrder: 1,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> storeCustomersToSilverLayer",
 				"filterRankOrders sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> storeOrdersToSilver",
+				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> storeOrdersToSilver",
 				"filterRankProducts sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> storeProductsToSilver"
+				"     skipDuplicateMapOutputs: true,",
+				"     preCommands: [],",
+				"     postCommands: []) ~> storeProductsToSilver"
 			]
 		}
 	}

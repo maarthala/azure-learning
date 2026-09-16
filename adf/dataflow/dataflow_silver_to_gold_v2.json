@@ -5,12 +5,24 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "ds_parquet",
+						"type": "DatasetReference"
+					},
 					"name": "readOrders"
 				},
 				{
+					"dataset": {
+						"referenceName": "ds_parquet",
+						"type": "DatasetReference"
+					},
 					"name": "readProducts"
 				},
 				{
+					"dataset": {
+						"referenceName": "ds_parquet",
+						"type": "DatasetReference"
+					},
 					"name": "customers"
 				}
 			],
@@ -34,35 +46,20 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          order_id as string,",
-				"          order_date as date,",
-				"          customer_id as string,",
-				"          product_id as string,",
-				"          quantity as short,",
-				"          rn as boolean",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet',",
 				"     wildcardPaths:['orders/*.csv']) ~> readOrders",
-				"source(output(",
-				"          product_id as string,",
-				"          product_name as string,",
-				"          category as string,",
-				"          price as double,",
-				"          rn as boolean",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet',",
 				"     wildcardPaths:['products/*.csv']) ~> readProducts",
-				"source(output(",
-				"          customer_id as string,",
-				"          name as string,",
-				"          city as string,",
-				"          rn as boolean",
-				"     ),",
-				"     allowSchemaDrift: true,",
+				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet',",
 				"     wildcardPaths:['customers/*.csv']) ~> customers",
 				"readOrders, readProducts join(readOrders@product_id == readProducts@product_id,",
 				"     joinType:'inner',",
@@ -84,7 +81,7 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> JoinOrderDetailsCustomers",
-				"JoinOrderDetailsCustomers aggregate(groupBy(customers@customer_id,",
+				"JoinOrderDetailsCustomers aggregate(groupBy(customer_id = customers@customer_id,",
 				"          name),",
 				"     totalAmont = sum(quantity*price)) ~> aggCustomerOrderTotalAmount",
 				"aggCustomerOrderTotalAmount sink(allowSchemaDrift: true,",

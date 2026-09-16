@@ -89,10 +89,8 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ProcessToSilver",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_controller_file",
@@ -196,6 +194,61 @@
 						}
 					},
 					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ProcessToGold",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow_silver_to_gold_v2",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"readOrders": {
+								"path": {
+									"value": "silver",
+									"type": "Expression"
+								}
+							},
+							"readProducts": {
+								"path": "silver"
+							},
+							"customers": {
+								"path": "silver"
+							}
+						},
+						"linkedServiceParameters": {
+							"readOrders": {
+								"schemaLinkedService": {
+									"path": "silver"
+								}
+							},
+							"readProducts": {
+								"schemaLinkedService": {
+									"path": "silver"
+								}
+							},
+							"customers": {
+								"schemaLinkedService": {
+									"path": "silver"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
 				}
 			}
 		],

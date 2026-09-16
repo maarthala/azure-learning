@@ -5,6 +5,8 @@
 			{
 				"name": "copy_source_to_bronze",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -56,6 +58,8 @@
 			{
 				"name": "ProcessToSilver",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_controller_file",
@@ -155,7 +159,7 @@
 						"referenceName": "ds_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"path": "landing/controller.json"
+							"path": "landing/controllers.json"
 						}
 					},
 					"firstRowOnly": false
@@ -164,6 +168,8 @@
 			{
 				"name": "ProcessToGold",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ProcessToSilver",
@@ -207,6 +213,35 @@
 						"computeType": "General"
 					},
 					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "WebHook1",
+				"type": "WebHook",
+				"dependsOn": [
+					{
+						"activity": "Lookup_controller_file",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://mm.eeneman.com/api/v4/posts",
+					"method": "POST",
+					"headers": {
+						"Authorization": "Bearer qpgh8fawdp8nxce7upb7ouf6ar"
+					},
+					"body": {
+						"value": "@json(concat(\n  '{\"channel_id\":\"3sewa8qn878xmkjhef5zct19ih\",',\n  '\"message\":\"ADF Pipeline: ', pipeline().Pipeline,\n  '\\nRun ID: ', pipeline().RunId,\n  '\\nActivity: Lookup_controller_file',\n  '\\nError: ', replace(activity('Lookup_controller_file').error.message, '\"', '\\\"'),\n  '\"}'\n))\n\n\n",
+						"type": "Expression"
+					},
+					"timeout": "00:10:00"
 				}
 			}
 		],

@@ -99,12 +99,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow_silver_to_gold_v2",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"customerSalesAmount": {
-								"folderName": "customerSales"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,

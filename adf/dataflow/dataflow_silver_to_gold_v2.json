@@ -28,6 +28,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "ds_parquet",
+						"type": "DatasetReference"
+					},
 					"name": "customerSalesAmount"
 				}
 			],
@@ -101,13 +105,15 @@
 				"     broadcast: 'auto')~> JoinOrderDetailsCustomers",
 				"JoinOrderDetailsCustomers aggregate(groupBy(name,",
 				"          customers@customer_id),",
-				"     totalAmont = sum(quantity*price)) ~> aggCustomerOrderTotalAmount",
+				"     totalAmont = sum(toInteger(quantity) *  toDouble(price))) ~> aggCustomerOrderTotalAmount",
 				"aggCustomerOrderTotalAmount sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
 				"     preCommands: [],",
-				"     postCommands: []) ~> customerSalesAmount"
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> customerSalesAmount"
 			]
 		}
 	}

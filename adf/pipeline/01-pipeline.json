@@ -5,8 +5,6 @@
 			{
 				"name": "copy_source_to_bronze",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -56,45 +54,8 @@
 				]
 			},
 			{
-				"name": "read_bronze_metadata",
-				"type": "GetMetadata",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "ds_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"path": "bronze"
-						}
-					},
-					"fieldList": [
-						"childItems"
-					],
-					"storeSettings": {
-						"type": "AzureBlobFSReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
-					}
-				}
-			},
-			{
 				"name": "ProcessToSilver",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_controller_file",
@@ -160,8 +121,6 @@
 			{
 				"name": "Lookup_controller_file",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "copy_source_to_bronze",
@@ -205,7 +164,14 @@
 			{
 				"name": "ProcessToGold",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "ProcessToSilver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -233,13 +199,6 @@
 							},
 							"customerSalesAmount": {
 								"path": "gold"
-							}
-						},
-						"linkedServiceParameters": {
-							"customerSalesAmount": {
-								"schemaLinkedService": {
-									"path": "gold"
-								}
 							}
 						}
 					},

@@ -5,6 +5,8 @@
 			{
 				"name": "copy_source_to_bronze",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -91,6 +93,8 @@
 			{
 				"name": "ProcessToSilver",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_controller_file",
@@ -156,6 +160,8 @@
 			{
 				"name": "Lookup_controller_file",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "copy_source_to_bronze",

@@ -231,23 +231,6 @@
 							"customers": {
 								"path": "silver"
 							}
-						},
-						"linkedServiceParameters": {
-							"readOrders": {
-								"schemaLinkedService": {
-									"path": "silver"
-								}
-							},
-							"readProducts": {
-								"schemaLinkedService": {
-									"path": "silver"
-								}
-							},
-							"customers": {
-								"schemaLinkedService": {
-									"path": "silver"
-								}
-							}
 						}
 					},
 					"compute": {
